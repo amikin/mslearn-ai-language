@@ -4,7 +4,7 @@ from playsound3 import playsound
 from dotenv import load_dotenv
 
 # Import namespaces
-
+from openai import AzureOpenAI
 
 
 def main():
@@ -21,11 +21,21 @@ def main():
 
 
         # Create the Azure OpenAI client
-        
+        client = AzureOpenAI(
+                azure_endpoint=endpoint,
+                api_key=key,
+                api_version="2025-03-01-preview"
+            )
 
 
         # Generate speech and save to file
-        
+        with client.audio.speech.with_streaming_response.create(
+                    model=model_deployment,
+                    voice="alloy",
+                    input="My voice is my passport!",
+                    instructions="Speak in a serious tone.",
+                ) as response:
+            response.stream_to_file(speech_file_path)
 
 
         # Play the generated speech file
