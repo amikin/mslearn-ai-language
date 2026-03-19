@@ -4,7 +4,7 @@ from playsound3 import playsound
 from dotenv import load_dotenv
 
 # Import namespaces
-
+from openai import AzureOpenAI
 
 
 def main():
@@ -23,11 +23,22 @@ def main():
         playsound(file_path)
         
         # Create the Azure OpenAI client
-
+        client = AzureOpenAI(
+                azure_endpoint=endpoint,
+                api_key=key,
+                api_version="2025-03-01-preview"
+            )
 
         
         # Call model to transcribe audio file
-
+        audio_file = open(file_path, "rb")
+        transcription = client.audio.transcriptions.create(
+            model=model_deployment,
+            file=audio_file,
+            response_format="text"
+        )
+            
+        print(transcription)
 
 
 
