@@ -35,7 +35,6 @@ def main():
         )
 
         print(f"{agent_name}: {response.output_text}")
-        
         print(f"\nResponse Details: {response.model_dump_json(indent=2)}")
 
         
